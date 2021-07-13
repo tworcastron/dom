@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+  <style>
+    .done {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Event Bubbling, Capture, Propagation 🤔</h1>
+    <br>
+
+    <p><b>Lista zadań:</b></p>
+    <ul>
+      <li data-id="0" class="done">Przerobić kurs Reacta <button class="btn btn-sm btn-danger">x</button></li>
+      <li data-id="1">Zrobić zakupy <button class="btn btn-sm btn-danger">x</button></li>
+      <li data-id="2">Wykąpać psa 
+        <button class="btn btn-sm btn-danger">x</button>
+        <button class="btn btn-sm btn-info edit">edytuj</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- wczytaj skrypty -->
+  <script>
+    document.querySelectorAll('ul li').forEach(li => {
+      li.addEventListener('click', toggleDone);
+      li.querySelector('.edit')?.addEventListener('click', editItem);
+      li.querySelector('button').addEventListener('click', removeItem);
+    });
+
+    function removeItem(event) {
+      const button = event.target;
+      const li = button.parentElement;
+      li.remove();
+    }
+
+    function editItem() {
+      console.log('edit kliknięty');
+      event.stopPropagation(); // stop bubbling!
+    }
+
+    function toggleDone(event) {
+      const li = event.target;
+      li.classList.toggle('done');
+      console.log('li kliknięte');
+      event.stopPropagation(); // stop bubbling!
+    }
+
+
+    document.querySelector('ul').addEventListener('click', () => console.log('ul kliknięte'));
+    document.querySelector('div').addEventListener('click', () => console.log('div kliknięty'));
+  </script>
+
+</body>
+</html>
